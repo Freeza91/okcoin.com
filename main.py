@@ -19,51 +19,40 @@ okcoinFuture = OKCoinFuture(okcoinRESTURL,apikey,secretkey)
 category = ''
 price = 0
 trend = ''
+is_continue = True
 
-while True:
+input_trend = sys.argv[1]
+input_price = sys.argv[2]
+input_category = sys.argv[3]
 
-    input_category = input('输入交易类型: 平多单(duo) or 平空单(kong):\n')
-    if input_category == 'duo':
-        category = 'duo'
-        break
-    elif input_category == 'kong':
-        category = 'kong'
-        break
-    else:
-        print('输入格式不正确, 重新输入')
+if 'duo' in input_category:
+    category = 'duo'
+elif 'kong' in input_category:
+    category = 'kong'
+else:
+    print('input_category 输入格式不正确， 重新输入')
+    is_continue = False
 
-while True:
+if input_trend == 'gt':
+    trend = '>='
+elif input_trend == 'lt':
+    trend = '<='
+else:
+    print('input_trend 输入格式不正确， 重新输入')
+    is_continue = False
 
-    input_trend = input('输入交易方向: >= or <= :\n')
-    if input_trend == '>=':
-        trend = '>='
-        break
-    elif input_trend == '<=':
-        trend = '<='
-        break
-    else:
-        print('输入格式不正确， 重新输入')
+price = float(input_price)
+if not 1000 <= price <= 100000:
+    print('价格输入格式不正确， 重新输入')
+    is_continue = False
 
-while True:
-
-    input_price = input('输入触发价: \n')
-    price = float(input_price)
-    if 1000 <= price <= 100000:
-        break
-    else:
-        print('输入格式不正确， 重新输入')
-
-while True:
+if is_continue:
     print('-' * 30)
-    print('你将开始一个计划委托：当价格 %s%s 时，平%s单' %(trend, price, category))
+    print('你将开始一个计划委托：当价格 %s %s 时，平%s单' %(trend, price, category))
     print('-' * 30)
-
-    yes_or_no = input('yes 继续 no 结束: \n')
-
-    if yes_or_no == 'yes':
-        break
-    elif yes_or_no == 'no':
-        sys.exit()
+    time.sleep(30)
+else:
+    time.sleep(600000)
 
 rate = okcoinFuture.exchange_rate()['rate']
 
@@ -72,7 +61,6 @@ while True:
     try:
         # 获取订单信息
         # 有挂单就继续向下，等待持仓成交， 没挂单，则自动退出
-        # okcoinfuture_orderinfo
         orders = okcoinFuture.future_orderinfo('btc_usd', 'quarter', '-1', '1', '1', '50')
         orders = json.loads(orders)['orders']
 
