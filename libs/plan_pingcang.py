@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO,
                     filename='./trade.log',
                     filemode='w')
 
-def trade(okcoin, _type, amount):
+def trade(okcoin, _type, amount, current_price):
     okcoin.future_trade('btc_usd','quarter','',amount, _type,'1','10')
     if _type == '3':
         category = '平多'
@@ -21,7 +21,7 @@ def trade(okcoin, _type, amount):
 def plan(trend, current_price, plan_price, amount, okcoin, _type):
     if trend == '>=':
         if current_price >= plan_price:
-            trade(okcoin, _type, amount)
+            trade(okcoin, _type, amount, current_price)
     elif trend == '<=':
         if current_price <= plan_price:
-            trade(okcoin, _type, amount)
+            trade(okcoin, _type, amount, current_price)
