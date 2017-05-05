@@ -2,3 +2,5 @@ conf/*.py
 **/*.swp
 **/*.pyc
 **/*.log
+**/*.out
+**/*.log
