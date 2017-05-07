@@ -56,6 +56,9 @@ else:
 
 rate = okcoinFuture.exchange_rate()['rate']
 
+result = False
+trigger_order = None
+
 while True:
 
     try:
@@ -82,7 +85,13 @@ while True:
             current_price = round(float(rate) * float(current_usd_price), 1)
             print(current_price)
 
-            plan(trend, current_price, price, amount, okcoinFuture, '3')
+            if result and trigger_order:
+                is_dealing = check_orders(trigger_order, trend, current_price, okcoinFuture)
+                if not is_dealing:
+                    result = False
+                    trigger_order = None
+            else:
+                result, trigger_order = plan(trend, current_price, price, amount, okcoinFuture, '3')
 
         # 平空仓
         elif category == 'kong' and sell_available > 0:
@@ -93,7 +102,15 @@ while True:
             current_price = round(float(rate) * float(current_usd_price), 1)
             print(current_price)
 
-            plan(trend, current_price, price, amount, okcoinFuture, '4')
+            if result and trigger_order:
+                is_dealing = check_orders(trigger_order, trend, current_price, okcoinFuture)
+                if not is_dealing:
+                    result = False
+                    trigger_order = None
+            else:
+                result, trigger_order = plan(trend, current_price, price, amount, okcoinFuture, '4')
+
+
     except Exception as e:
         print(e)
         time.sleep(3)
