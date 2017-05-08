@@ -6,7 +6,7 @@ import sys
 import json
 import time
 from OkcoinFutureAPI import OKCoinFuture
-from plan_pingcang import plan
+from plan_pingcang import plan, check_orders
 
 from conf import okcoin
 

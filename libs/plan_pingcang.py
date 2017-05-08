@@ -46,10 +46,10 @@ def check_orders(trigger_order, trend, current_price, okcoin):
     order_price = float(order['price'])
 
     # 价格差距6, 取消之前的挂单
-    if trend == '>=' and current_price - price >= 6:
+    if trend == '>=' and current_price - price >= 2:
         okcoin.future_cancel('btc_usd','quarter', order_id)
         return False
-    elif trend == '<=' and price - current_price >= 6:
+    elif trend == '<=' and price - current_price >= 2:
         okcoin.future_cancel('btc_usd','quarter', order_id)
         return False
 
