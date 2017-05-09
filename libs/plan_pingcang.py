@@ -45,11 +45,14 @@ def check_orders(trigger_order, trend, current_price, okcoin):
 
     order_price = float(order['price'])
 
-    # 价格差距6, 取消之前的挂单
-    if trend == '>=' and current_price - price >= 2:
+    logging.info('current_price %s, order price %s' %( current_price, order_price ))
+    logging.info('current trens is %s' % trend)
+
+    # 价格差距3.33, 取消之前的挂单
+    if trend == '>=' and current_price - price >= 3.33:
         okcoin.future_cancel('btc_usd','quarter', order_id)
         return False
-    elif trend == '<=' and price - current_price >= 2:
+    elif trend == '<=' and price - current_price >= 3.33:
         okcoin.future_cancel('btc_usd','quarter', order_id)
         return False
 
