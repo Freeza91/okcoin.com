@@ -6,7 +6,7 @@ import sys
 import json
 import time
 from OkcoinFutureAPI import OKCoinFuture
-from plan_pingcang import plan, check_orders
+from plan_pingcang import plan
 
 from conf import okcoin
 
@@ -55,9 +55,7 @@ else:
     time.sleep(600000)
 
 rate = okcoinFuture.exchange_rate()['rate']
-
-result = False
-trigger_order = None
+print('start>>>>>>>>>>>>>>>>>>>>>>>')
 
 while True:
 
@@ -76,6 +74,16 @@ while True:
         if not len(orders) and buy_available == 0 and sell_available == 0:
             sys.exit()
 
+        if len(orders) > 0:
+            for order in orders:
+                status = int(order['type'])
+                order_id = order['order_id']
+                # 平仓单, 如果不能及时止损，取消挂单
+                if status == 3 or status == 4:
+                    print("cancel order: %s" % order_id)
+                    okcoinFuture = future_cancel('btc_usd', 'quarter', order_id)
+                    time.sleep(0.5)
+
         # 平多仓
         if category == 'duo' and buy_available > 0:
             amount = buy_available
@@ -85,13 +93,7 @@ while True:
             current_price = round(float(rate) * float(current_usd_price), 1)
             print(current_price)
 
-            if result and trigger_order:
-                is_dealing = check_orders(trigger_order, trend, current_price, okcoinFuture)
-                if not is_dealing:
-                    result = False
-                    trigger_order = None
-            else:
-                result, trigger_order = plan(trend, current_price, price, amount, okcoinFuture, '3')
+            plan(trend, current_price, price, amount, okcoinFuture, '3')
 
         # 平空仓
         elif category == 'kong' and sell_available > 0:
@@ -102,14 +104,7 @@ while True:
             current_price = round(float(rate) * float(current_usd_price), 1)
             print(current_price)
 
-            if result and trigger_order:
-                is_dealing = check_orders(trigger_order, trend, current_price, okcoinFuture)
-                if not is_dealing:
-                    result = False
-                    trigger_order = None
-            else:
-                result, trigger_order = plan(trend, current_price, price, amount, okcoinFuture, '4')
-
+            plan(trend, current_price, price, amount, okcoinFuture, '4')
 
     except Exception as e:
         print(e)
