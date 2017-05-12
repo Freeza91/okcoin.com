@@ -50,9 +50,9 @@ if is_continue:
     print('-' * 30)
     print('你将开始一个计划委托：当价格 %s %s 时，平%s单' %(trend, price, category))
     print('-' * 30)
-    time.sleep(30)
 else:
-    time.sleep(600000)
+    print('输入不合法，自动退出')
+    sys.exit()
 
 rate = okcoinFuture.exchange_rate()['rate']
 print('start>>>>>>>>>>>>>>>>>>>>>>>')
@@ -82,7 +82,7 @@ while True:
                 if status == 3 or status == 4:
                     print("cancel order: %s" % order_id)
                     time.sleep(0.5)
-                    okcoinFuture = future_cancel('btc_usd', 'quarter', order_id)
+                    okcoinFuture.future_cancel('btc_usd', 'quarter', order_id)
 
         # 平多仓
         if category == 'duo' and buy_available > 0:
