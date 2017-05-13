@@ -74,16 +74,6 @@ while True:
         if not len(orders) and buy_available == 0 and sell_available == 0:
             sys.exit()
 
-        if len(orders) > 0:
-            for order in orders:
-                status = int(order['type'])
-                order_id = order['order_id']
-                # 平仓单, 如果不能及时止损，取消挂单
-                if status == 3 or status == 4:
-                    print("cancel order: %s" % order_id)
-                    time.sleep(0.5)
-                    okcoinFuture.future_cancel('btc_usd', 'quarter', order_id)
-
         # 平多仓
         if category == 'duo' and buy_available > 0:
             amount = buy_available
