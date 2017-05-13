@@ -9,7 +9,10 @@ logging.basicConfig(level=logging.INFO,
                     filename='./trade.log',
                     filemode='w')
 
-def trade(okcoin, _type, amount, current_price):
+def trade(okcoin, _type, amount, current_price, orders):
+
+    check_cancel_order(okcoin, orders)
+
     orders_info = okcoin.future_trade('btc_usd','quarter','',amount, _type,'1','10')
     if _type == '3':
         category = '平多'
@@ -18,22 +21,17 @@ def trade(okcoin, _type, amount, current_price):
 
     logging.info('以%s价格平%s：数量%s' % (current_price, category, amount))
 
-    check_cancel_order(okcoin)
-
 # 对手价
-def plan(trend, current_price, plan_price, amount, okcoin, _type):
+def plan(trend, current_price, plan_price, amount, okcoin, _type, orders):
 
     if trend == '>=':
         if current_price >= plan_price:
-            trade(okcoin, _type, amount, current_price)
+            trade(okcoin, _type, amount, current_price, orders)
     elif trend == '<=':
         if current_price <= plan_price:
-            trade(okcoin, _type, amount, current_price)
+            trade(okcoin, _type, amount, current_price, orders)
 
-def check_cancel_order(okcoin):
-    orders = okcoinFuture.future_orderinfo('btc_usd', 'quarter', '-1', '1', '1', '50')
-    orders = json.loads(orders)['orders']
-
+def check_cancel_order(okcoin, orders):
     for order in orders:
         status = int(order['type'])
         order_id = order['order_id']

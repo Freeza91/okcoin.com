@@ -5,3 +5,4 @@ conf/*.py
 **/*.out
 **/*.log
 **/*.swo
+**/*.swn

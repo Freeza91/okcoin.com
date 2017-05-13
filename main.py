@@ -83,7 +83,7 @@ while True:
             current_price = round(float(rate) * float(current_usd_price), 1)
             print(current_price)
 
-            plan(trend, current_price, price, amount, okcoinFuture, '3')
+            plan(trend, current_price, price, amount, okcoinFuture, '3', orders)
 
         # 平空仓
         elif category == 'kong' and sell_available > 0:
@@ -94,7 +94,7 @@ while True:
             current_price = round(float(rate) * float(current_usd_price), 1)
             print(current_price)
 
-            plan(trend, current_price, price, amount, okcoinFuture, '4')
+            plan(trend, current_price, price, amount, okcoinFuture, '4', orders)
 
     except Exception as e:
         print(e)
