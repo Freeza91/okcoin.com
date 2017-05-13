@@ -41,4 +41,4 @@ def check_cancel_order(okcoin):
         if status == 3 or status == 4:
             print("cancel order: %s" % order_id)
             time.sleep(0.5)
-            okcoinFuture.future_cancel('btc_usd', 'quarter', order_id)
+            okcoin.future_cancel('btc_usd', 'quarter', order_id)
