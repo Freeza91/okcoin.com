@@ -1,3 +1,3 @@
 apikey = 'XXXX'
 secretkey = 'XXXXX'
-okcoinRESTURL = 'www.okcoin.com'
+okcoinRESTURL = 'www.okex.com'

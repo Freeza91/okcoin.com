@@ -7,6 +7,7 @@ import json
 import time
 from OkcoinFutureAPI import OKCoinFuture
 from plan_pingcang import plan
+from helpers import get_btc_price
 
 from conf import okcoin
 
@@ -54,7 +55,6 @@ else:
     print('输入不合法，自动退出')
     sys.exit()
 
-rate = okcoinFuture.exchange_rate()['rate']
 print('start>>>>>>>>>>>>>>>>>>>>>>>')
 
 while True:
