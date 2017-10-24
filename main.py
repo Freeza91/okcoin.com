@@ -79,23 +79,25 @@ while True:
             amount = buy_available
 
             # 获取当前价格参数
-            current_usd_price = okcoinFuture.future_ticker('btc_usd','quarter')['ticker']['last']
-            current_price = round(float(rate) * float(current_usd_price), 1)
-            print(current_price)
+            current_price = get_btc_price()
+            if current_price:
+                current_price = float(current_price)
+                logging.info(current_price)
 
-            plan(trend, current_price, price, amount, okcoinFuture, '3', orders)
+                plan(trend, current_price, price, amount, okcoinFuture, '3', orders)
 
         # 平空仓
         elif category == 'kong' and sell_available > 0:
             amount = sell_available
 
             # 获取当前价格参数
-            current_usd_price = okcoinFuture.future_ticker('btc_usd','quarter')['ticker']['last']
-            current_price = round(float(rate) * float(current_usd_price), 1)
-            print(current_price)
+            current_price = get_btc_price()
+            if current_price:
+                current_price = float(current_price)
+                logging.info(current_price)
 
-            plan(trend, current_price, price, amount, okcoinFuture, '4', orders)
+                plan(trend, current_price, price, amount, okcoinFuture, '4', orders)
 
     except Exception as e:
-        print(e)
+        logging.info(e)
         time.sleep(3)

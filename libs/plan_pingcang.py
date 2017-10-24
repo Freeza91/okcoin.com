@@ -14,7 +14,10 @@ def trade(okcoin, _type, amount, current_price, orders):
 
     check_cancel_order(okcoin, orders)
 
+    time.sleep(1)
+
     orders_info = okcoin.future_trade('btc_usd','quarter','',amount, _type,'1','10')
+
     if _type == '3':
         category = '平多'
     elif _type == '4':
@@ -38,6 +41,5 @@ def check_cancel_order(okcoin, orders):
         order_id = order['order_id']
         # 平仓单, 如果不能及时止损，取消挂单
         if status == 3 or status == 4:
-            print("cancel order: %s" % order_id)
-            time.sleep(0.5)
+            logging.info("cancel order: %s" % order_id)
             okcoin.future_cancel('btc_usd', 'quarter', order_id)
