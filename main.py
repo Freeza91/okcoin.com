@@ -5,6 +5,7 @@
 import sys
 import json
 import time
+import logging
 from OkcoinFutureAPI import OKCoinFuture
 from plan_pingcang import plan
 from helpers import get_btc_price
