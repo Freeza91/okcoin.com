@@ -2,7 +2,7 @@
 
 import requests
 
-def get_btc_price(platform='bitstampbtcusd'):
+def get_btc_price(platform='bitfinexbtcusd'):
     url = 'https://s2.bitcoinwisdom.com/ticker'
     try:
         data = requests.get(url, timeout=5).json()
