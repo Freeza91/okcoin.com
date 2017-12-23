@@ -80,7 +80,7 @@ while True:
             amount = buy_available
 
             # 获取当前价格参数
-            current_price = get_btc_price()
+            current_price = get_btc_price('bitstampbtcusd')
             if current_price:
                 current_price = float(current_price)
                 logging.info(current_price)
@@ -92,7 +92,7 @@ while True:
             amount = sell_available
 
             # 获取当前价格参数
-            current_price = get_btc_price()
+            current_price = get_btc_price('bitstampbtcusd')
             if current_price:
                 current_price = float(current_price)
                 logging.info(current_price)
