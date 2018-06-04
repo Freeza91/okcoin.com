@@ -9,6 +9,7 @@ import logging
 from OkcoinFutureAPI import OKCoinFuture
 from plan_pingcang import plan
 from helpers import get_btc_price
+from helpers import get_eos_price
 
 from conf import okcoin
 
@@ -44,7 +45,7 @@ else:
     is_continue = False
 
 price = float(input_price)
-if not 1000 <= price <= 100000:
+if not 5 <= price <= 1000:
     print('价格输入格式不正确， 重新输入')
     is_continue = False
 
@@ -57,22 +58,25 @@ else:
     sys.exit()
 
 print('start>>>>>>>>>>>>>>>>>>>>>>>')
+# currency = 'btc_usd'
+currency = 'eos_usd'
 
 while True:
 
     try:
         # 获取订单信息
         # 有挂单就继续向下，等待持仓成交， 没挂单，则自动退出
-        orders = okcoinFuture.future_orderinfo('btc_usd', 'quarter', '-1', '1', '1', '50')
+        orders = okcoinFuture.future_orderinfo(currency, 'quarter', '-1', '1', '1', '50')
         orders = json.loads(orders)['orders']
 
         # 全仓持仓信息
-        holding = json.loads(okcoinFuture.future_position('btc_usd','quarter'))['holding'][0]
+        holding = json.loads(okcoinFuture.future_position(currency,'quarter'))['holding'][0]
         buy_available = holding['buy_available']
         sell_available = holding['sell_available']
 
         # 在没有挂单同时也没有持仓的情况下就要退出
         if not len(orders) and buy_available == 0 and sell_available == 0:
+            print('exit')
             sys.exit()
 
         # 平多仓
@@ -80,24 +84,26 @@ while True:
             amount = buy_available
 
             # 获取当前价格参数
-            current_price = get_btc_price('bitstampbtcusd')
+            # current_price = get_btc_price('bitstampbtcusd')
+            current_price = get_eos_price()
             if current_price:
                 current_price = float(current_price)
                 logging.info(current_price)
 
-                plan(trend, current_price, price, amount, okcoinFuture, '3', orders)
+                plan(currency, trend, current_price, price, amount, okcoinFuture, '3', orders)
 
         # 平空仓
         elif category == 'kong' and sell_available > 0:
             amount = sell_available
 
             # 获取当前价格参数
-            current_price = get_btc_price('bitstampbtcusd')
+            # current_price = get_btc_price('bitstampbtcusd')
+            current_price = get_eos_price()
             if current_price:
                 current_price = float(current_price)
                 logging.info(current_price)
 
-                plan(trend, current_price, price, amount, okcoinFuture, '4', orders)
+                plan(currency, trend, current_price, price, amount, okcoinFuture, '4', orders)
 
     except Exception as e:
         logging.info(e)
